@@ -9,6 +9,13 @@ curl.exe -X POST "http://localhost:8080/api/s3/v1/upload/file" `
   -F "name=cattos" `
   -F "description=cat image"
 ``
+<br>
+To execute the database u have to :
+``
+docker compose up -d
+``
+
+Make sure that the database is created and that in ur **applications.properties** , you have the right configurations
 
 Was just a quick project to play around with springboot
 
