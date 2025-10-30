@@ -1,0 +1,12 @@
+### GET request to example server
+GET http://localhost:8080/api/s3/v1/upload/1
+
+###
+POST http://localhost:8080/api/s3/v1/upload
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Sto",
+  "description": "Gooning material"
+}
