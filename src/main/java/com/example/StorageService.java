@@ -7,34 +7,37 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StorageService {
 
-    private final List<Storage> storage;
+    private final StorageRepository storageRepository;
 
-    public StorageService() {
-        this.storage = new ArrayList<>();
+    public StorageService(StorageRepository storageRepository) {
+        this.storageRepository = storageRepository;
     }
 
 
     public Storage getStorage(Integer id) {
-        return storage.stream()
-                .filter(s -> s.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Storage not found"
-                ));
+        return storageRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
 
     public List<Storage> getStorages() {
-        return storage;
+        return storageRepository.findAll();
     }
 
-    public void setStorage(Storage file) {
-        storage.add(file);
-        System.out.println("storage size : "+ storage.size());
+    public void addFile(Storage file) {
+
+        Optional<Storage> existing = storageRepository.findByNameAndLocationAndDescription(file.getName(), file.getLocation(), file.getDescription());
+        if (existing.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Duplicate Entry");
+        }
+
+        storageRepository.save(file);
+        System.out.println("storage size : "+ storageRepository.count());
 
     }
 }

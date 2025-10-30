@@ -1,12 +1,29 @@
 ### GET request to example server
-GET http://localhost:8080/api/s3/v1/upload/1
+GET http://localhost:8080/api/s3/v1/upload/
 
 ###
 POST http://localhost:8080/api/s3/v1/upload
 Content-Type: application/json
 
 {
-  "id": 1,
   "name": "Sto",
   "description": "Gooning material"
+}
+
+###
+POST http://localhost:8080/api/s3/v1/upload
+Content-Type: application/json
+
+{
+  "name": "GameAlpha",
+  "description": "Fps game"
+}
+
+###
+POST http://localhost:8080/api/s3/v1/upload
+Content-Type: application/json
+
+{
+  "name": "GameBeta",
+  "description": "Moba game"
 }

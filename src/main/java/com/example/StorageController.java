@@ -34,7 +34,7 @@ public class StorageController {
 
     @PostMapping
     public void save(@RequestBody Storage file){
-        storageService.setStorage(file);
+        storageService.addFile(file);
     }
 
 }

@@ -1,18 +1,23 @@
 package com.example;
 
 
+import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 
-@Component
+@Entity
 public class Storage {
 
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String location;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     public Storage(){
