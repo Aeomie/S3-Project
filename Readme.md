@@ -12,6 +12,10 @@ curl.exe -X POST "http://localhost:8080/api/s3/v1/upload/file" `
 
 Was just a quick project to play around with springboot
 
+To use right now , you have to index on the link
+- login for login page , takes u to upload space after
+- register to register but doesnt take u to login immediately
+
 ---
 Future upgrades if i ever comeback to it:
 
