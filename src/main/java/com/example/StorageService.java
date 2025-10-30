@@ -3,8 +3,14 @@ package com.example;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +19,7 @@ import java.util.Optional;
 public class StorageService {
 
     private final StorageRepository storageRepository;
+    String uploadPath = "./uploads/";
 
     public StorageService(StorageRepository storageRepository) {
         this.storageRepository = storageRepository;
@@ -29,15 +36,41 @@ public class StorageService {
         return storageRepository.findAll();
     }
 
-    public void addFile(Storage file) {
+    public void storeFile(MultipartFile file, String name, String description) {
 
-        Optional<Storage> existing = storageRepository.findByNameAndLocationAndDescription(file.getName(), file.getLocation(), file.getDescription());
+        String location = uploadPath + name;
+        Optional<Storage> existing = storageRepository.findByNameAndLocationAndDescription(name, location, description);
         if (existing.isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Duplicate Entry");
         }
+        try{
+            Storage storage = new Storage();
+            storage.setName(name);
+            storage.setDescription(description);
+            storage.setLocation(saveFiletoDisk(file,name));
+            storageRepository.save(storage);
+        }catch (Exception e) {
+            throw new RuntimeException("Error storing file", e);
+        }
+    }
 
-        storageRepository.save(file);
-        System.out.println("storage size : "+ storageRepository.count());
+    private String saveFiletoDisk(MultipartFile file, String name) throws IOException {
+        // Get original filename's extension
+        String originalFilename = file.getOriginalFilename();
+        String extension = "";
+        if (originalFilename != null && originalFilename.contains(".")) {
+            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        }
 
+        String filename = name + extension;
+
+        // Create absolute path
+        Path uploadDir = Paths.get(uploadPath).toAbsolutePath();
+        Files.createDirectories(uploadDir);
+
+        Path filePath = uploadDir.resolve(filename);
+        file.transferTo(filePath.toFile());
+
+        return filePath.toString();  // Return absolute path
     }
 }

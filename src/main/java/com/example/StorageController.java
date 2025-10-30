@@ -3,6 +3,7 @@ package com.example;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,10 +32,18 @@ public class StorageController {
         return storageService.getStorage(id);
     }
 
+    @GetMapping("/wellness")
+    public String checkStatus(){
+        return "Server is alive";
+    }
 
-    @PostMapping
-    public void save(@RequestBody Storage file){
-        storageService.addFile(file);
+    @PostMapping("/file")
+    public void uploadFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description
+    ){
+        storageService.storeFile(file, name, description);
     }
 
 }
