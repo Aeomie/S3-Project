@@ -2,5 +2,30 @@
 GET http://localhost:8080/api/s3/v1/upload/
 ###
 GET http://localhost:8080/api/s3/v1/upload/wellness
-###
 
+### Returns False
+POST http://localhost:8080/api/s3/v1/user/login
+Content-Type: application/json
+
+{
+  "username": "babbaroto",
+  "password": "sqdsqd"
+}
+
+### Returns true
+POST http://localhost:8080/api/s3/v1/user/login
+Content-Type: application/json
+
+{
+  "username": "babbaroto",
+  "password": "toto"
+}
+###
+POST http://localhost:8080/api/s3/v1/user/register
+Content-Type: application/json
+
+{
+  "name": "kero",
+  "username": "babbaroto",
+  "password": "toto"
+}

@@ -1,8 +1,7 @@
-package com.example;
+package com.example.Storage;
 
 
 import jakarta.persistence.*;
-import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
